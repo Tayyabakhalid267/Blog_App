@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-lg">
+        <div class="card-body p-5">
+          <div class="text-center mb-5">
+            <img src="https://img.icons8.com/3d-fluency/150/ask-question.png" alt="Help" style="width: 120px; height: 120px;">
+            <h1 class="mt-3 fw-bold">Help Center</h1>
+            <p class="lead text-muted">Find answers to common questions</p>
+          </div>
+
+          <div class="mb-5">
+            <div class="d-flex align-items-center mb-4">
+              <img src="https://img.icons8.com/3d-fluency/50/faq.png" alt="FAQ" style="width: 40px; height: 40px;" class="me-3">
+              <h3 class="fw-bold mb-0">Frequently Asked Questions</h3>
+            </div>
+            
+            <div class="accordion" id="faqAccordion">
+              <div class="accordion-item mb-3">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                    <i class="bi bi-1-circle-fill me-2"></i>How do I create a post?
+                  </button>
+                </h2>
+                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    <p>To create a post:</p>
+                    <ol>
+                      <li>Make sure you're logged in</li>
+                      <li>Navigate to the home page</li>
+                      <li>Find the "Share your thoughts" text area</li>
+                      <li>Type your message</li>
+                      <li>Click the "Post" button</li>
+                    </ol>
+                    <p>Your post will appear instantly at the top of the feed!</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item mb-3">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                    <i class="bi bi-2-circle-fill me-2"></i>Can I edit or delete my posts?
+                  </button>
+                </h2>
+                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    <p><strong>Yes!</strong> You have full control over your posts.</p>
+                    <p><strong>To edit:</strong> Click the pencil icon <i class="bi bi-pencil"></i> next to your post, make changes, and save.</p>
+                    <p><strong>To delete:</strong> Click the trash icon <i class="bi bi-trash"></i> next to your post and confirm deletion.</p>
+                    <p class="text-muted"><small>Note: You can only edit or delete your own posts.</small></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item mb-3">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                    <i class="bi bi-3-circle-fill me-2"></i>How do I create an account?
+                  </button>
+                </h2>
+                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    <p>Creating an account is easy:</p>
+                    <ol>
+                      <li>Click the "Sign up" button in the navigation bar</li>
+                      <li>Fill in your desired username and password</li>
+                      <li>Click "Sign up" to create your account</li>
+                      <li>You'll be automatically logged in</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item mb-3">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                    <i class="bi bi-4-circle-fill me-2"></i>What is the Pro badge?
+                  </button>
+                </h2>
+                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    <p>The <span class="badge bg-light text-dark">Pro</span> badge indicates active users who regularly engage with the community.</p>
+                    <p>All registered users receive this badge to show they're part of our growing community!</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item mb-3">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                    <i class="bi bi-5-circle-fill me-2"></i>How do I logout?
+                  </button>
+                </h2>
+                <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    <p>You have two options to logout:</p>
+                    <ol>
+                      <li>Click the <strong>"Logout"</strong> button in the top navigation bar</li>
+                      <li>Click your profile avatar, then select "Logout" from the dropdown menu</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item mb-3">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                    <i class="bi bi-6-circle-fill me-2"></i>Is my data secure?
+                  </button>
+                </h2>
+                <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    <p><strong>Yes!</strong> We take security seriously:</p>
+                    <ul>
+                      <li>All passwords are encrypted</li>
+                      <li>CSRF protection on all forms</li>
+                      <li>Secure authentication system</li>
+                      <li>User-specific post permissions</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-light p-4 rounded mb-4">
+            <div class="d-flex align-items-center mb-3">
+              <img src="https://img.icons8.com/3d-fluency/50/idea.png" alt="Tips" style="width: 40px; height: 40px;" class="me-3">
+              <h4 class="fw-bold mb-0">Quick Tips</h4>
+            </div>
+            <ul class="mb-0">
+              <li>Posts are paginated - use the page numbers at the bottom to view more posts</li>
+              <li>Hover over posts to see edit and delete options</li>
+              <li>Your profile avatar shows the first letter of your username</li>
+              <li>Toast notifications will confirm your actions</li>
+              <li>All changes happen instantly with AJAX - no page reloads needed!</li>
+            </ul>
+          </div>
+
+          <div class="text-center">
+            <p class="lead mb-3">Still need help?</p>
+            <a href="{% url 'contact' %}" class="btn btn-primary btn-lg me-2">
+              <i class="bi bi-envelope-fill me-2"></i>Contact Support
+            </a>
+            <a href="/" class="btn btn-outline-primary btn-lg">
+              <i class="bi bi-house-fill me-2"></i>Back to Home
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
