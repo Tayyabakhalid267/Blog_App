@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Board</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .message-form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        .messages {
+            margin-top: 20px;
+        }
+        
+        .message {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .message-author {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .message-timestamp {
+            color: #999;
+            font-size: 12px;
+        }
+        
+        .message-content {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .delete-btn {
+            background-color: #dc3545;
+            padding: 5px 10px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        
+        .no-messages {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+        }
+        
+        .error {
+            color: #dc3545;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8d7da;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Message Board</h1>
+        
+        <div class="message-form">
+            <h2>Post a Message</h2>
+            <form id="messageForm">
+                <div class="form-group">
+                    <label for="author">Your Name</label>
+                    <input type="text" id="author" name="author" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="content">Message</label>
+                    <textarea id="content" name="content" required></textarea>
+                </div>
+                
+                <button type="submit">Post Message</button>
+                <div class="error" id="error"></div>
+            </form>
+        </div>
+        
+        <div class="messages">
+            <h2>Messages</h2>
+            <div id="messagesList">
+                <div class="no-messages">No messages yet. Be the first to post!</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const messageForm = document.getElementById('messageForm');
+        const messagesList = document.getElementById('messagesList');
+        const errorDiv = document.getElementById('error');
+        
+        // Load messages on page load
+        loadMessages();
+        
+        // Handle form submission
+        messageForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const author = document.getElementById('author').value;
+            const content = document.getElementById('content').value;
+            
+            try {
+                const response = await fetch('/api/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ author, content })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to post message');
+                }
+                
+                // Clear form
+                messageForm.reset();
+                errorDiv.style.display = 'none';
+                
+                // Reload messages
+                loadMessages();
+            } catch (error) {
+                errorDiv.textContent = 'Error posting message. Please try again.';
+                errorDiv.style.display = 'block';
+            }
+        });
+        
+        // Load messages from server
+        async function loadMessages() {
+            try {
+                const response = await fetch('/api/messages');
+                const messages = await response.json();
+                
+                if (messages.length === 0) {
+                    messagesList.innerHTML = '<div class="no-messages">No messages yet. Be the first to post!</div>';
+                    return;
+                }
+                
+                // Sort messages by timestamp (newest first)
+                messages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                
+                messagesList.innerHTML = messages.map(message => `
+                    <div class="message">
+                        <div class="message-header">
+                            <span class="message-author">${escapeHtml(message.author)}</span>
+                            <span class="message-timestamp">${formatDate(message.timestamp)}</span>
+                        </div>
+                        <div class="message-content">${escapeHtml(message.content)}</div>
+                        <button class="delete-btn" onclick="deleteMessage(${message.id})">Delete</button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                messagesList.innerHTML = '<div class="no-messages">Error loading messages</div>';
+            }
+        }
+        
+        // Delete a message
+        async function deleteMessage(id) {
+            if (!confirm('Are you sure you want to delete this message?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/messages/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to delete message');
+                }
+                
+                loadMessages();
+            } catch (error) {
+                alert('Error deleting message. Please try again.');
+            }
+        }
+        
+        // Format date
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString();
+        }
+        
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
