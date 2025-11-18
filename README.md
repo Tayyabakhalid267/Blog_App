@@ -107,3 +107,13 @@ This project is licensed under the ISC License.
 - Messages are stored in memory and will be lost when the server restarts
 - For production use, consider implementing persistent storage (database)
 - The application includes basic XSS protection through HTML escaping
+
+## Security Considerations
+
+This is a demonstration application. For production use, consider adding:
+- Rate limiting to prevent abuse
+- Authentication and authorization
+- HTTPS/TLS encryption
+- Input sanitization and validation
+- CSRF protection
+- Persistent storage with proper security measures
